@@ -97,7 +97,8 @@ where `<row>` and `<col>` indicate the spatial grid position of the patch.
 
 ## 4. Preprocess demo dataset dataset
 
-One section from the mouse hippocumpus dataset is in `data/CA1_raw/3_1_left`
+One section from the mouse hippocumpus dataset is in `data/CA1_raw/3_1_left`, from [Probabilistic cell typing enables fine mapping of closely related cell types in situ](https://www.nature.com/articles/s41592-019-0631-4#data-availability).
+The paper provided a link to download full dataset: [mouse hippocumpus CA1 region](https://figshare.com/articles/dataset/CA1_neuron_cell_typing_results_of_pciSeq_probabilistic_cell_typing_by_in_situ_sequencing_/7150760).
 
 To preprocess this dataset and start training, run:
 
