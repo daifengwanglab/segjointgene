@@ -1,6 +1,6 @@
 ## Overview
 
-SegJointGene is a self-training framework for spatial cell-type segmentation that integrates **noise-based attribution (CID)** to constrain iterative label propagation.
+SegJointGene is a self-training framework for spatial cell-type segmentation that integrates **Computational Information Discarding (CID)** to constrain iterative label propagation.
 The method combines a segmentation network with attribution-guided label updates to progressively refine pixel-wise class and instance labels.
 
 ---
@@ -13,25 +13,23 @@ This codebase is tested with:
 
 Python 3.11.8
 
-### Minimal Dependencies
+### Dependencies
 
-You only need a standard PyTorch environment. Typical requirements include:
+Typical requirements include:
 
 * `torch`
 * `numpy`
 * `argparse`
+* `cv2`
+* `captum`
+* `skimage`
+* `scipy`
 
-A minimal setup example:
+You can install by conda:
 
-* `python -m venv segjointgene-env`
-* `source segjointgene-env/bin/activate`
-* `pip install torch numpy`
-
-No additional packages are required beyond what is used in the three files:
-
-* `main.py`
-* `step_SegJointGene_CID.py`
-* `utils.py`
+* `conda create -n segjointgene python=3.11 -y`
+* `conda activate segjointgene`
+* `conda install pytorch numpy opencv scikit-image scipy captum -c pytorch -c conda-forge`
 
 ---
 
@@ -97,17 +95,22 @@ where `<row>` and `<col>` indicate the spatial grid position of the patch.
 
 ---
 
-## 4. Running SegJointGene-CID
+## 4. Preprocess demo dataset dataset
+
+One section from the mouse hippocumpus dataset is in `data/CA1_raw/3_1_left`
+
+To preprocess this dataset and start training, run:
+
+* `python main.py --datasets_name=CA1 --step_name=preprocess_CA1 --CA1_sub_path=3_1_left`
+
+## 5. Running SegJointGene
 
 ### Basic Command
 
 The main entry point is `main.py`.
 To run the CID-based self-training pipeline:
 
-python main.py 
---step_name SegjointGene_CID 
---datasets_name CA1 
---gpu_id 0
+* `python main.py --datasets_name=CA1 --step_name=SegjointGene --attr_method=CID`
 
 This will:
 
@@ -124,7 +127,8 @@ This will:
 | ------------------ | --------------------------------------------------- |
 | `--patch_size`     | Patch resolution                                    |
 | `--attr_epoch`     | Epoch to start CID attribution                      |
-| `--attr_grid`      | Number of target cell types × genes for attribution |
+| `--attr_n_gene`      | Number of target genes for attribution |
+| `--attr_n_celltype`      | Number of target cell types for attribution |
 | `--CID_n_steps`    | Optimization steps for CID                          |
 | `--CID_chunk_size` | Number of cell types processed per CID chunk        |
 | `--if_load_ckpt`   | Resume from a saved checkpoint                      |
@@ -133,7 +137,7 @@ All arguments are defined in `main.py`.
 
 ---
 
-## 5. Output
+## 6. Output
 
 During execution, the framework will automatically:
 
@@ -143,10 +147,10 @@ During execution, the framework will automatically:
 
 ---
 
-## 6. Summary
+## 7. Summary
 
-SegJointGene-CID provides a minimal yet expressive framework for **attribution-guided self-training in spatial segmentation**, combining:
+SegJointGene provides a minimal yet expressive framework for **attribution-guided self-training in spatial segmentation**, combining:
 
 * Patch-based segmentation
 * Dynamic label propagation
-* Noise-based attribution (CID)
+* Computational Information Discarding guided training

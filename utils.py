@@ -1,6 +1,6 @@
 import os
 import glob
-import math
+import csv
 import numpy as np
 import torch
 import torch.nn as nn
@@ -13,9 +13,11 @@ from torch.utils.data import Dataset
 from joblib import Parallel, delayed
 from tqdm import tqdm
 
+
 def make_dir(dir_path):
     if os.path.exists(dir_path) == False:
         os.mkdir(dir_path)
+
 
 def setup_seed(seed):
    torch.manual_seed(seed)
@@ -23,6 +25,23 @@ def setup_seed(seed):
    np.random.seed(seed)
    random.seed(seed)
    torch.backends.cudnn.deterministic = True
+
+def save_csv(result_path,result_item):
+    csv_data = []
+    if not os.path.exists(result_path):
+        with open(result_path, 'w',encoding='utf-8') as new_file:
+            csv_write = csv.writer(new_file)
+            csv_write.writerow([])
+    with open(result_path, 'r',encoding='utf-8') as file_read:
+        csv_read = csv.reader(file_read)
+        for row in csv_read:
+            csv_data.append(row)
+    csv_data.append(result_item)
+    with open(result_path, 'w',encoding='utf-8') as file_write:
+        csv_write = csv.writer(file_write)
+        for result_item in csv_data:
+            csv_write.writerow(result_item)
+
 
 def _worker_save_sample(idx, image, label, spots, save_dir):
     if isinstance(image, torch.Tensor):
@@ -184,6 +203,17 @@ def step_load_ckpt(path_dict, net, optimizer, logger, args, if_load=False):
         return net, optimizer, logger, args.ckpt_load_epoch
     else:
         return net, optimizer, logger, 0
+
+
+def step_print_SegJointGene(batch_id,epoch_id,loss,acc,num_batch,if_train):
+    if batch_id % 10 == 0:
+        if if_train:
+            print_title = "Train: [" + str(batch_id) + "/" + str(num_batch) + "] of epoch " + str(epoch_id) + "\n"
+        else:
+            print_title = "Test: [" + str(batch_id) + "/" + str(num_batch) + "] of epoch " + str(epoch_id) + "\n"
+        loss_content = "loss: " + str(float(loss)) + "\n"
+        acc_content = "acc: " + str(float(acc)) + "\n"
+        print(print_title + loss_content + acc_content)
 
 
 # ============================================================
