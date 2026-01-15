@@ -20,7 +20,7 @@ parser.add_argument('--datasets_name',type=str,default='CUB',help='')
 parser.add_argument('--net_name',type=str,default='unet',help='')
 parser.add_argument('--step_name',type=str,default='net',help='')
 # add adjustable net args
-parser.add_argument('--net_sub_suffix',type=str,default="SegjointGene",help='')
+parser.add_argument('--net_sub_suffix',type=str,default="SegJointGene_CID",help='')
 parser.add_argument('--if_load_ckpt',type=str2bool,default=False,help='set true for loading net from trained before')
 parser.add_argument('--ckpt_load_epoch',type=int,default=30,help='the epoch of loaded net')
 # add computing args
@@ -36,7 +36,7 @@ parser.add_argument('--patch_size',type=int,default=256,help='size for each patc
 parser.add_argument('--density_sigma',type=float,default=5,help='for density map generation')
 # add CA1 arg
 parser.add_argument('--CA1_sub_path',type=str,default='3_1_left')
-# add SegjointGene arg
+# add SegJointGene arg
 parser.add_argument('--attr_method',type=str,default='CID',help='CID, IG, none')
 parser.add_argument('--attr_n_gene',type=int,default=50,help='')
 parser.add_argument('--attr_n_celltype',type=int,default=59,help='')
@@ -75,8 +75,8 @@ if args.datasets_name == 'CA1':
 if args.step_name == 'preprocess_CA1':
     from step_preprocess_CA1 import step_preprocess_CA1
     step_preprocess_CA1(root_path, args)
-elif args.step_name == 'SegjointGene':
-    from step_SegjointGene import step_SegjointGene
-    step_SegjointGene(root_path, args)
+elif args.step_name == 'SegJointGene':
+    from step_SegJointGene import step_SegJointGene
+    step_SegJointGene(root_path, args)
 else:
     raise NameError('Can not recognize the name of step')

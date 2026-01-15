@@ -27,8 +27,8 @@ Typical requirements include:
 
 You can install by conda:
 
-* `conda create -n segjointgene python=3.11 -y`
-* `conda activate segjointgene`
+* `conda create -n SegJointGene python=3.11 -y`
+* `conda activate SegJointGene`
 * `conda install pytorch numpy opencv scikit-image scipy captum -c pytorch -c conda-forge`
 
 ---
@@ -111,7 +111,7 @@ To preprocess this dataset and start training, run:
 The main entry point is `main.py`.
 To run the CID-based self-training pipeline:
 
-* `python main.py --datasets_name=CA1 --step_name=SegjointGene --attr_method=CID`
+* `python main.py --datasets_name=CA1 --step_name=SegJointGene --attr_method=CID --net_sub_suffix=SegJointGene_CID`
 
 This will:
 

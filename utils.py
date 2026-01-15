@@ -82,8 +82,8 @@ def step_save_dataset_state(dataset, path_dict, epoch_id, prefix='train', n_jobs
 def step_get_suffix(args):
     if args.step_name.startswith('net'):
         return args.step_name
-    elif args.step_name.startswith('SegjointGene'):
-        return 'SegjointGene'
+    elif args.step_name.startswith('SegJointGene'):
+        return 'SegJointGene'
     elif args.step_name.startswith('evaluation') or args.step_name.startswith('visualize'):
         return 'net'
     else:
