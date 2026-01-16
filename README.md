@@ -24,12 +24,16 @@ Typical requirements include:
 * `captum`
 * `skimage`
 * `scipy`
+* `tifffile`
+* `pandas`
+* `matplotlib`
 
 You can install by conda:
 
 * `conda create -n SegJointGene python=3.11 -y`
 * `conda activate SegJointGene`
-* `conda install pytorch numpy opencv scikit-image scipy captum -c pytorch -c conda-forge`
+* `conda install pytorch pytorch-cuda=12.1 captum numpy scipy pandas matplotlib opencv scikit-image tifffile -c pytorch -c nvidia -c conda-forge`
+
 
 ---
 
