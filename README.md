@@ -1,4 +1,4 @@
-# SegJointGene-CID (Simulation Standalone)
+# SegJointGene
 
 ## Overview
 
