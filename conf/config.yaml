@@ -1,0 +1,22 @@
+defaults:
+  - model: unet
+  - dataset: Simulation
+  - train: default
+  - logger: tensorboard
+  - paths: default
+  - task: dynamic_segmentation_CID
+  - experiment: default
+  - _self_
+
+seed: 1
+
+exp_run_leaf: ${experiment.sub_name}_${seed}
+
+hydra:
+  run:
+    dir: ${paths.root}/experiment/${dataset.name}/${model.name}/${task.name}/${exp_run_leaf}
+  sweep:
+    dir: ${paths.root}/experiment/multirun/${dataset.name}/${model.name}/${task.name}/${now:%Y-%m-%d}_${now:%H-%M-%S}
+    subdir: ${hydra.job.num}
+  job:
+    chdir: true

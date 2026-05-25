@@ -1,0 +1,12 @@
+# @package _global_
+logger:
+  tensorboard: true
+  # After training, start TensorBoard on this run’s ``tensorboard/`` and open the URL (rank 0 only).
+  tensorboard_auto_launch: true
+  # Listen on all interfaces (use in Docker / remote: open http://<host>:<port>/ from your machine).
+  tensorboard_bind_all: false
+  wandb: false
+  wandb_project: dlbase
+  wandb_name: null
+  wandb_entity: null
+  wandb_offline: false

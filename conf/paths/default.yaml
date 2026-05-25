@@ -1,0 +1,4 @@
+# @package _global_
+paths:
+  root: ${hydra:runtime.cwd}
+  data_dir: ./data

@@ -1,0 +1,74 @@
+# @package _global_
+# Raw inputs: ${paths.data_dir}/Simulation_raw/ (image_*.png, label_*.png, spots_*.csv).
+# After preprocess: ${paths.data_dir}/Simulation/{train,val,test}/ and ${paths.data_dir}/Simulation_image/.
+# See ${paths.data_dir}/Simulation/preprocess_summary.txt for exact n_celltype after preprocess.
+# ``defaults`` 中 dataset 在 model 之后加载，此处覆盖 UNet 通道数以匹配 NPZ。
+model:
+  in_channels: 980
+  num_classes: 6
+
+dataset:
+  name: Simulation
+  data_path: ${paths.data_dir}/Simulation
+  rerun_preprocess: false
+  preprocess:
+    # NPZ patch edge length written by ``datasets.preprocess.Simulation``; must match ``dynamic_seg.patch_size``.
+    patch_size: 128
+    # Same semantics as WMB/CA1 (``visum.process_crop_and_transform``): scale spot coords and rasters.
+    global_scale: 0.5
+    density_sigma: 6
+    Simulation_min_large_clusters: 5
+    Simulation_cluster_min_frac: 0.10
+    Simulation_kmeans_k_min: 10
+    Simulation_kmeans_k_max: 28
+    Simulation_dapi_close_radius: 9
+    Simulation_dapi_gaussian_sigma: 1.5
+    Simulation_dapi_min_hole_area: 256
+    # Patch-level split (all conditions pooled): ~7:1:2 train/val/test; seed for reproducibility.
+    Simulation_split_seed: ${seed}
+    Simulation_train_tenths: 7
+    Simulation_val_tenths: 1
+  batch_size: 16
+  num_workers: 8
+  pin_memory: true
+  input_format: image
+
+dynamic_seg:
+  patch_size: 128
+  n_gene: 980
+  # Total classes including background (0). Must match
+  # ${paths.data_dir}/Simulation/n_celltype.txt after preprocess.
+  n_celltype: 6
+  base_channel: 512
+  input_channel: 980
+  output_channel: 6
+  vis_max_png_side: 8192
+  # Matplotlib DPI for figures under experiment ``visualize/`` (stitcher, UMAP, eval panels).
+  figure_dpi: 600
+  # Number of warm-up epochs before dynamic pseudo-label update starts.
+  predict_epoch: 5
+  lambda_ce: 1.0
+  lambda_dice: 1.0
+  pixel_distance: 5
+  expand_k: 10
+  prediction_threshold: 0.5
+  # dynamic_segmentation: visualize only epoch 0 and train.max_epochs. CID task: every N epochs (+ 0, last).
+  vis_save_every: 10
+  local_grid_size: 16
+  save_space_trick: false
+  save_space_trick_epoch_num: 1
+  if_load_ckpt: false
+  ckpt_load_epoch: 30
+  gpu_id: 0
+
+  # CID attribution params (used by dynamic_segmentation_CID)
+  attr_method: CID
+  attr_epoch: 0
+  attr_top_ratio: 0.1
+  CID_n_steps: 20
+  CID_lr: 0.1
+  CID_lambda_param: 0.01
+  CID_beta: 1.2
+  CID_grid_size: 8
+  CID_noise_num: 8
+  CID_gene_chunk_size: 100

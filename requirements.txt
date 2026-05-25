@@ -1,0 +1,31 @@
+# SpatialPheno = bundled DLBase + extensions (install from repo root: pip install -r requirements.txt)
+
+# Core
+torch>=2.0.0
+torchvision>=0.15.0
+numpy>=1.21.0
+opencv-python>=4.5.0
+Pillow>=9.0.0
+
+# Training stack (DLBase)
+pytorch-lightning>=2.1.0
+tensorboard>=2.14.0
+hydra-core>=1.3.0
+omegaconf>=2.3.0
+pytest>=7.0.0
+
+# Dynamic segmentation helpers
+scikit-learn>=1.0.0
+scikit-image>=0.19.0
+scipy>=1.7.0
+pandas>=1.3.0
+matplotlib>=3.5.0
+tqdm>=4.60.0
+joblib>=1.0.0
+
+# Preprocess pipelines (datasets.preprocess visum / WMB / CA1) — install when needed
+# scanpy>=1.9.0
+# anndata>=0.8.0
+# tensorflow>=2.10.0
+# captum>=0.6.0
+# shap>=0.41.0

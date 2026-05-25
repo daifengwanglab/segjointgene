@@ -1,0 +1,5 @@
+# @package _global_
+task:
+  name: dynamic_segmentation_CID
+  facets:
+    post_train_eval_and_summary: true

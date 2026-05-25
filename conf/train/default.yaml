@@ -1,0 +1,41 @@
+# @package _global_
+train:
+  max_epochs: 100
+  # Training tqdm postfix updates every N batches (running epoch mean changes slowly when N>1).
+  progress_bar_refresh_rate: 20
+  accelerator: auto
+  devices: 1
+  precision: null
+  gradient_clip_val: 0.0
+  log_every_n_steps: 100
+  deterministic: false
+  benchmark: true
+
+  early_stopping:
+    enable: true
+    monitor: val/loss
+    # patience is computed in tasks/classification/run.py: max(5, int(0.1 * train.max_epochs)); one val per epoch
+    mode: min
+    min_delta: 0.0
+
+  checkpoint:
+    monitor: val/loss
+    mode: min
+    # Best weights are always written as best.ckpt (single monitored top-1).
+    # If true, also keep periodic snapshots epoch_<epoch>.ckpt (no zero-padding) every N epochs.
+    keep_intermediate: false
+    keep_every_n_epochs: 10
+
+  optimizer:
+    name: AdamW
+    lr: 1.0e-4
+    weight_decay: 1.0e-2
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+
+  lr_scheduler:
+    # Warmup length is computed in code: max(5, int(0.1 * train.max_epochs))
+    min_lr_ratio: 0.01
+
+  # Set at runtime for phase-2 continuation (constant LR); keep null in config files
+  phase2_constant_lr: null
